@@ -112,8 +112,12 @@ run-test: test
 	@/tmp/test/sample 2>/dev/null || true
 	@strings /tmp/test/sample | grep -i famine || echo "Pas encore infecté"
 	@echo ""
+	@echo "$(YELLOW)→ Création du fichier de force pour activation...$(RESET)"
+	@touch /tmp/famine_force
 	@echo "$(YELLOW)→ Exécution de Famine...$(RESET)"
 	@./$(NAME)
+	@echo "$(YELLOW)→ Suppression du fichier de force...$(RESET)"
+	@rm -f /tmp/famine_force
 	@echo ""
 	@echo "$(YELLOW)→ Vérification après infection...$(RESET)"
 	@/tmp/test/sample 2>/dev/null || true
