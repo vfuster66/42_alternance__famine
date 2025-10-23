@@ -1,0 +1,35 @@
+FROM debian:12-slim
+
+LABEL maintainer="sdestann <sdestann@student.42perpignan.fr>"
+ENV DEBIAN_FRONTEND=noninteractive
+
+# outils utiles pour dev/asm/debug (nasm, gcc, make, gdb, objdump, readelf, qemu-user)
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+    build-essential \
+    nasm \
+    gcc \
+    make \
+    git \
+    pkg-config \
+    gdb \
+    binutils \
+    file \
+    qemu-user \
+    qemu-user-static \
+    curl \
+    ca-certificates \
+    strace \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+# Créer un utilisateur non-root pour dev (optionnel)
+RUN useradd -m -s /bin/bash dev
+WORKDIR /home/dev
+
+# Copie des scripts si montés via contexte build (optionnel)
+COPY ./workspace/scripts /home/dev/scripts
+RUN chmod +x /home/dev/scripts/*.sh || true
+
+# par défaut, rester en bash (démarrable via docker exec / make)
+CMD ["/bin/bash"]

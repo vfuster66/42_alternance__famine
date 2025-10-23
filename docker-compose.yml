@@ -1,0 +1,13 @@
+services:
+  playground:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: famine-playground:debian
+    container_name: famine_playground
+    volumes:
+      - ./workspace:/workspace
+      - ./scripts:/home/dev/scripts
+    tty: true
+    stdin_open: true
+    network_mode: "bridge"
